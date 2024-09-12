@@ -179,7 +179,7 @@ const CatchPage = () => {
       </div>
 
       {isCatch ? (
-        <div className="top-40 left-1/3 z-50 absolute border-2 border-white bg-black shadow-xl p-2 rounded font-bold text-center text-lg">
+        <div className="top-56 md:top-40 xl:top-40 left-24 md:left-28 xl:left-28 z-50 absolute border-2 border-white bg-black shadow-xl p-2 rounded font-bold text-center text-lg">
           <p>Congratulations!!!</p>
           <p>you caught pokemon.</p>
           <p>give them a nickname!</p>

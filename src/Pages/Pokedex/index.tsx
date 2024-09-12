@@ -21,8 +21,8 @@ const PokedexPage = () => {
     setData(pokedex);
   }, []);
 
-  const handleDelete = (id: number) => {
-	const updatedPokedex = data.filter(pokemon => pokemon.id !== id);
+  const handleDelete = (nickname: string) => {
+	const updatedPokedex = data.filter(pokemon => pokemon.nickname !== nickname);
     console.log("🚀 ~ handleDelete ~ updatedPokedex:", updatedPokedex)
     setData(updatedPokedex);
     localStorage.setItem("pokedex", JSON.stringify(updatedPokedex));
@@ -36,7 +36,7 @@ const PokedexPage = () => {
             <div className="relative" key={i}>
               <button
                 className="top-0 right-4 absolute font-bold text-xl"
-                onClick={() => handleDelete(item.id)}
+                onClick={() => handleDelete(item.nickname)}
               >
                 x
               </button>
