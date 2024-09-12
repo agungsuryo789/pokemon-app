@@ -1,41 +1,91 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
+import PokemonType from "../../Component/pokemonType";
+import Bar from "../../Component/bar";
+
+interface Pokemon {
+  id: number;
+  name: string;
+  abilities: any[];
+  stats: any[];
+  sprite: string;
+  gif: string;
+  types: any[];
+}
 
 const Detail = () => {
   const { id } = useParams();
 
+  const [data, setData] = useState<Pokemon>({
+    id: 0,
+    name: "",
+    abilities: [],
+    stats: [],
+    sprite: "",
+    gif: "",
+    types: [],
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setData({
+          id: data.id,
+          name: data.name,
+          abilities: data.abilities,
+          stats: data.stats,
+          sprite: data.sprites.other.dream_world.front_default,
+          gif: data.sprites.other.showdown.front_default,
+          types: data.types,
+        });
+      } catch (err: unknown) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
-    <div className="flex flex-col items-center justify-center h-full w-full overflow-auto border-2 p-4 border-white">
-      <div className="flex flex-row justify-between">
-        <div className="flex flex-col items-center justify-center relative">
-          <p className="absolute top-0 font-bold text-xl">Pikachu</p>
-          <img
-            src="https://db.pokemongohub.net/_next/image?url=%2Fimages%2Fofficial%2Ffull%2F025.webp&w=384&q=75"
-            alt="pokemon-detail"
-            className="w-52 h-56 mx-2"
-          />
-          <div className="absolute bottom-0 font-bold border-2 border-white rounded p-1 my-1">
-            Electric
-          </div>
-        </div>
-        <div className="border-2 border-white rounded mx-2 min-w-52 p-2 drop-shadow-lg">
-          <p className="my-4">Max CP</p>
-          <p className="my-4">Attack</p>
-          <p className="my-4">Defense</p>
-          <p className="my-4">Stamina</p>
+    <div className="flex flex-col justify-between items-center border-2 border-white p-4 w-full h-full tracking-widest overflow-auto">
+      <div className="relative flex flex-col justify-center items-center">
+        <p className="top-0 absolute font-bold text-xl">
+          {data.name.toUpperCase()}
+        </p>
+        <img src={data.sprite} alt={data.name} className="mx-2 w-52 h-56" />
+        <div className="bottom-0 absolute flex flex-row">
+          {data.types &&
+            data.types.map((item, i) => (
+              <PokemonType key={i} type={item.type.name} />
+            ))}
         </div>
       </div>
-      <div className="border-2 border-white rounded h-40 overflow-y-auto w-full my-2 p-2 drop-shadow-lg">
-        <h3 className="text-center font-bold text-xl">Moveset</h3>
-        <ul className="list-disc list-inside">
-          <li>Thuder Shock</li>
-          <li>Thuder Shock</li>
-          <li>Thuder Shock</li>
-          <li>Thuder Shock</li>
-        </ul>
+      <div className="flex flex-row justify-between min-w-full">
+        <div className="border-4 bg-white drop-shadow-lg mx-1 p-2 border-black rounded w-full h-full text-black">
+          {data.stats.map((data, i) => (
+            <div key={i}>
+              <p className="my-1 text-sm">{data.stat.name}</p>
+              <Bar progress={data.base_stat} />
+            </div>
+          ))}
+        </div>
+        <div className="border-4 bg-white drop-shadow-lg mx-1 p-2 border-black rounded w-full h-full text-black overflow-y-auto">
+          <h3 className="font-bold text-center text-xl">Abilities</h3>
+          <ul className="list-disc list-inside">
+            {data.abilities.map((data, i) => (
+              <li key={i}>{data.ability.name}</li>
+            ))}
+          </ul>
+        </div>
       </div>
       <a
         href={`/catch/${id}`}
-        className="text-center w-full border-2 border-white rounded my-2 py-4 hover:bg-green-600"
+        className="border-2 border-white bg-orange-500 hover:bg-orange-700 my-2 py-4 rounded w-full text-center"
       >
         Catch!
       </a>

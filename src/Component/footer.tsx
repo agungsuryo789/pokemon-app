@@ -1,8 +1,8 @@
 const Footer = () => {
   return (
-    <footer className="flex flex-row items-center justify-between text-center sticky bottom-0 w-full py-4 border-2 border-white bg-black text-white">
-      <a href="/" className="basis-1/2 mx-2 my-2 font-bold text-xl">Home</a>
-	  <a href="/pokedex" className="basis-1/2 mx-2 my-2 font-bold text-xl">PokeDeck</a>
+    <footer className="bottom-0 z-50 sticky flex flex-row justify-between items-center border-2 border-white bg-black py-4 w-full text-center text-white">
+      <a href="/" className="mx-2 my-2 font-bold text-xl basis-1/2">Home</a>
+	  <a href="/pokedex" className="mx-2 my-2 font-bold text-xl basis-1/2">PokeDeck</a>
     </footer>
   );
 };

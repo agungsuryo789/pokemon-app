@@ -1,6 +1,6 @@
 const Navbar = () => {
   return (
-    <div className="text-center sticky top-0 w-full py-4 border-2 border-white bg-black text-white">
+    <div className="top-0 z-50 sticky border-2 border-white bg-black py-4 w-full text-center text-white">
       navbar
     </div>
   );
