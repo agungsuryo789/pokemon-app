@@ -86,6 +86,7 @@ const Home = () => {
                   link={`/detail/${item.name}`}
                   imgSrc={item.image}
                   name={item.name}
+				  nickname=""
                 />
               );
             })}

@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 
 import player from "../../assets/player-pokemon-back.png";
 import battleBg from "../../assets/pokemon battle bg.jpg";
 import Bar from "../../Component/bar";
 import battleSound from "../../assets/pokemon-battle.mp3";
-import caughtSound from '../../assets/pokemon-caught.mp3'
+import caughtSound from "../../assets/pokemon-caught.mp3";
 
 interface Pokemon {
   id: number;
@@ -83,7 +83,7 @@ const CatchPage = () => {
   const playAudioCaught = () => {
     audioRef.current = new Audio(caughtSound);
     audioRef.current.volume = 0.4;
-      audioRef.current.play();
+    audioRef.current.play();
   };
 
   const catchPokemon = () => {
@@ -92,11 +92,10 @@ const CatchPage = () => {
 
     if (randomChance < catchRate) {
       // Success: Catch the Pokemon
-      stopAudio()
-	  playAudioCaught()
+      stopAudio();
+      playAudioCaught();
       setCatch(!isCatch);
     } else {
-      // Failure: Did not catch
       alert("You Missed!!");
     }
   };
@@ -104,12 +103,23 @@ const CatchPage = () => {
   const addPokemonToLocalStorage = () => {
     if (nickname === "") return;
 
+    const pokemon = { ...data, nickname: nickname };
     const caughtPokemons = JSON.parse(localStorage.getItem("pokedex") || "[]");
-    caughtPokemons.push("pikachu");
-    localStorage.setItem("pokedex", JSON.stringify(caughtPokemons));
-    alert("saved!");
-    setNickname("");
-    navigate("/");
+
+    const isNicknameTaken = caughtPokemons.some(
+      (p: any) =>
+        p.nickname && p.nickname.toLowerCase() === nickname.toLowerCase()
+    );
+
+    if (!isNicknameTaken) {
+      caughtPokemons.push(pokemon);
+      localStorage.setItem("pokedex", JSON.stringify(caughtPokemons));
+      alert("Pokémon added!");
+      setNickname("");
+      navigate("/");
+    } else {
+      alert("Nickname is already taken, please choose a different one.");
+    }
   };
 
   return (
@@ -157,14 +167,14 @@ const CatchPage = () => {
           >
             Catch
           </button>
-          <a href="/" className="w-full h-full">
+          <Link to="/" className="w-full h-full">
             <button
               type="button"
               className="border-2 bg-blue-600 p-2 border-black rounded-lg w-full h-full"
             >
               Run
             </button>
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -187,14 +197,14 @@ const CatchPage = () => {
             >
               Submit
             </button>
-            <a href="/" className="w-full h-full">
+            <Link to="/" className="w-full h-full">
               <button
                 type="button"
                 className="border-2 border-white bg-black mx-1 my-1 rounded-lg w-full h-full text-white basis-1/2"
               >
                 Let them free!!
               </button>
-            </a>
+            </Link>
           </div>
         </div>
       ) : (
