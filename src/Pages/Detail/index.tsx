@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import PokemonType from "../../Component/pokemonType";
 import Bar from "../../Component/bar";
@@ -83,12 +83,12 @@ const Detail = () => {
           </ul>
         </div>
       </div>
-      <a
-        href={`/catch/${id}`}
+      <Link
+        to={`/catch/${id}`}
         className="border-2 border-white bg-orange-500 hover:bg-orange-700 my-2 py-4 rounded w-full text-center"
       >
         Catch!
-      </a>
+      </Link>
     </div>
   );
 };
